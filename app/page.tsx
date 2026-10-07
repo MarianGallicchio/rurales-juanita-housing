@@ -38,6 +38,7 @@ const DESCRIPCIONES: Record<string, string> = {
   cotizador: 'Asistente 4 pasos, versiones y firma',
   crm: 'Kanban, homologaciones y leads',
   computo: 'Cómputo 15 rubros + INDEC/CAMARCO/UOCRA',
+  caja: 'Caja diaria, cobros y arqueo',
   catalogo: 'Modelos, fotos reales y fichas',
   produccion: 'Trazabilidad ISO 9001 por unidad',
   stock: 'BOM, compras y conteo',

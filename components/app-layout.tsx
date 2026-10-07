@@ -4,7 +4,7 @@ import { GRUPOS, modulosParaRol, type Rol } from '@/lib/roles';
 // Shell único: sidebar agrupado en desktop, carrusel en móvil + HUD legible.
 export async function AppLayout({ rol, email, children }: { rol: Rol; email?: string | null; children: React.ReactNode }) {
   const mods = modulosParaRol(rol);
-  let hud = { tc: '—', tareas: 0, nc: 0, stock: 0 };
+  let hud = { tc: '—', tareas: 0, nc: 0, stock: 0, caja: '—' };
   try {
     const { queryLocal } = await import('@/lib/db-local');
     hud.tc = String((await queryLocal<{ v: number }>(`select valor_ars_por_usd as v from public.tipo_cambio order by fecha desc limit 1`))[0]?.v ?? '—');
@@ -12,6 +12,12 @@ export async function AppLayout({ rol, email, children }: { rol: Rol; email?: st
     hud.nc = (await queryLocal<{ n: number }>(`select count(*)::int n from public.no_conformidad where estado<>'cerrada'`))[0]?.n ?? 0;
     hud.stock = (await queryLocal<{ n: number }>(
       `select count(*)::int n from public.material m where (select coalesce(sum(case when tipo in ('entrada','ajuste') then cantidad when tipo in ('salida','reserva') then -cantidad else 0 end),0) from public.movimiento_stock s where s.material_id=m.id) < m.stock_minimo`))[0]?.n ?? 0;
+    try {
+      const cj = (await queryLocal<{ s: number }>(
+        `select coalesce((select saldo_inicial_ars from public.caja where estado='abierta' order by abierta_en desc limit 1),0)
+         + coalesce((select sum(case when m.tipo='ingreso' then m.monto_ars else -m.monto_ars end) from public.caja_movimiento m join public.caja c on c.id=m.caja_id where c.estado='abierta'),0) as s`))[0]?.s;
+      if (cj != null) hud.caja = String(Math.round(Number(cj)));
+    } catch { /* sin tabla caja aún */ }
   } catch { /* sin base: HUD vacío */ }
   return (
     <div className="min-h-screen bg-[#f1efdf] text-[#212529]">
@@ -26,12 +32,13 @@ export async function AppLayout({ rol, email, children }: { rol: Rol; email?: st
           </Link>
           <span className="rounded-full border border-dashed border-[#e8fe85] px-2 py-1 font-mono2 text-[10px] uppercase tracking-[.14em] text-[#e8fe85]">ISO 9001</span>
         </div>
-        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-mono2 text-[11px] uppercase tracking-wider text-white">
-          <span>USD ${hud.tc}</span>
-          <Link href="/crm" className={hud.tareas > 0 ? 'font-bold text-[#e8fe85]' : ''}>◷ {hud.tareas} tareas</Link>
-          <Link href="/produccion" className={hud.nc > 0 ? 'font-bold text-[#e8fe85]' : ''}>⛔ {hud.nc} NC</Link>
-          <Link href="/stock" className={hud.stock > 0 ? 'font-bold text-[#e8fe85]' : ''}>📦 {hud.stock} críticos</Link>
-          <Link href="/cotizador" className="ml-auto font-bold text-[#e8fe85] underline">+ Cotizar</Link>
+        <div className="mt-2 flex flex-wrap items-center gap-1" role="navigation" aria-label="Acciones">
+          <Link href="/cotizador" className="rounded-full bg-[#e8fe85] px-3 py-2 text-[12px] font-black uppercase tracking-wide text-[#053d30]">＋ Vender</Link>
+          <Link href="/caja" className="rounded-full bg-white/15 px-3 py-2 text-[12px] font-bold text-white">Cobrar{hud.caja !== '—' ? ` · ${hud.caja}` : ''}</Link>
+          <Link href="/stock" className={`rounded-full px-3 py-2 text-[12px] font-bold ${hud.stock > 0 ? 'bg-red-500 text-white' : 'bg-white/15 text-white'}`}>Stock{hud.stock > 0 ? ` · ${hud.stock}` : ''}</Link>
+          <Link href="/produccion" className={`rounded-full px-3 py-2 text-[12px] font-bold ${hud.nc > 0 ? 'bg-red-500 text-white' : 'bg-white/15 text-white'}`}>Planta{hud.nc > 0 ? ` · ${hud.nc} NC` : ''}</Link>
+          <Link href="/crm" className={`rounded-full px-3 py-2 text-[12px] font-bold ${hud.tareas > 0 ? 'bg-[#e8fe85] text-[#053d30]' : 'bg-white/15 text-white'}`}>Tareas{hud.tareas > 0 ? ` · ${hud.tareas}` : ''}</Link>
+          <span className="ml-auto font-mono2 text-[11px] uppercase tracking-wider text-[#e8fe85]">USD ${hud.tc}</span>
         </div>
         {/* Móvil: todos los módulos en carrusel (antes solo 4) */}
         <nav className="mt-2 flex gap-1 overflow-x-auto pb-1 md:hidden" aria-label="Módulos">
@@ -71,8 +78,8 @@ export async function AppLayout({ rol, email, children }: { rol: Rol; email?: st
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t bg-white md:hidden" aria-label="Accesos rápidos">
         <div className="grid grid-cols-5 gap-1 px-2 py-2">
           <Link href="/" className="rounded-lg px-1 py-2 text-center text-[11px] font-bold text-[#07503f]">Inicio</Link>
-          <Link href="/cotizador" className="rounded-lg bg-[#07503f] px-1 py-2 text-center text-[11px] font-bold text-white">+ Cotizar</Link>
-          <Link href="/computo" className="rounded-lg px-1 py-2 text-center text-[11px] font-bold text-[#07503f]">Cómputo</Link>
+          <Link href="/cotizador" className="rounded-lg bg-[#07503f] px-1 py-2 text-center text-[11px] font-bold text-white">Vender</Link>
+          <Link href="/caja" className="rounded-lg px-1 py-2 text-center text-[11px] font-bold text-[#07503f]">Cobrar</Link>
           <Link href="/produccion" className="rounded-lg px-1 py-2 text-center text-[11px] font-bold text-[#07503f]">Planta</Link>
           <Link href="/stock" className="rounded-lg px-1 py-2 text-center text-[11px] font-bold text-[#07503f]">Stock</Link>
         </div>

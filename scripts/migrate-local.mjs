@@ -16,7 +16,7 @@ await db.exec(`
   do $$ begin create role anon; exception when duplicate_object then null; end $$;
   do $$ begin create role service_role; exception when duplicate_object then null; end $$;
 `);
-const files = ['0001_fase0_base.sql','0002_fase1_catalogo.sql','0003_fase2_cotizador.sql','0004_fase3_crm.sql','0005_fase4_produccion.sql','0006_fase5_stock.sql','0007_fase7_postventa.sql','0008_mejoras_auditoria.sql','0009_firma_digital.sql','0010_garantia_manuales.sql','0011_arca.sql','0012_iva_pin_arca.sql','0013_share_alquiler.sql','0014_obra_computo.sql'];
+const files = ['0001_fase0_base.sql','0002_fase1_catalogo.sql','0003_fase2_cotizador.sql','0004_fase3_crm.sql','0005_fase4_produccion.sql','0006_fase5_stock.sql','0007_fase7_postventa.sql','0008_mejoras_auditoria.sql','0009_firma_digital.sql','0010_garantia_manuales.sql','0011_arca.sql','0012_iva_pin_arca.sql','0013_share_alquiler.sql','0014_obra_computo.sql','0015_caja.sql'];
 for (const f of files) {
   let sql = fs.readFileSync(path.join(root, 'supabase', 'migrations', f), 'utf8');
   sql = sql.replace(/create extension if not exists "pgcrypto";/i, '-- pgcrypto nativo');

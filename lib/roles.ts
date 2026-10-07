@@ -3,7 +3,7 @@ export type Rol = 'Administrador' | 'Ventas' | 'Produccion' | 'Compras' | 'Postv
 export const ROLES: Rol[] = ['Administrador', 'Ventas', 'Produccion', 'Compras', 'Postventa'];
 
 export type Modulo =
-  | 'panel' | 'cotizador' | 'crm' | 'computo'
+  | 'panel' | 'cotizador' | 'crm' | 'computo' | 'caja'
   | 'catalogo' | 'produccion' | 'stock'
   | 'postventa' | 'facturacion' | 'fichas'
   | 'usuarios' | 'config' | 'auditoria';
@@ -16,6 +16,7 @@ export const MODULOS: { key: Modulo; label: string; href: string; grupo: Grupo; 
   { key: 'cotizador', label: 'Cotizador', href: '/cotizador', grupo: 'Operar', roles: ['Administrador', 'Ventas'] },
   { key: 'crm', label: 'CRM', href: '/crm', grupo: 'Operar', roles: ['Administrador', 'Ventas', 'Postventa'] },
   { key: 'computo', label: 'Cómputo', href: '/computo', grupo: 'Operar', roles: ['Administrador', 'Ventas', 'Produccion', 'Compras'] },
+  { key: 'caja', label: 'Caja', href: '/caja', grupo: 'Operar', roles: ['Administrador', 'Ventas', 'Compras'] },
   // Producir — fabricar
   { key: 'catalogo', label: 'Catálogo', href: '/catalogo', grupo: 'Producir', roles: ['Administrador', 'Ventas', 'Produccion', 'Compras'] },
   { key: 'produccion', label: 'Producción', href: '/produccion', grupo: 'Producir', roles: ['Administrador', 'Ventas', 'Produccion', 'Compras', 'Postventa'] },

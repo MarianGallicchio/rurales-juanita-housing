@@ -39,7 +39,8 @@ export default async function Panel({ searchParams }: { searchParams: Promise<{ 
   return (
     <AppLayout rol={ses.rol} email={ses.email}>
       <div className="flex flex-col gap-3">
-        <PageHero kicker="Fase 8 · Dirección" titulo={<>Panel de <em className="rj-gold">control</em></>} bajada="Decisiones con datos: ventas, planta, stock, calidad." vivo />
+        <PageHero kicker="Fase 8 · Dirección" titulo={<>Panel de <span className="text-[#e8fe85]">control</span></>} bajada="Decisiones con datos: ventas, planta, stock, calidad."
+          accion={<a href={`/api/panel/export?${new URLSearchParams({ desde: sp.desde ?? '', hasta: sp.hasta ?? '' }).toString()}`} className="rj-btn bg-white font-bold text-[#212529]">Exportar CSV ⭳</a>} vivo />
         <form method="get" action="/panel" className="rj-card grid grid-cols-2 gap-2 md:grid-cols-5">
           <input name="desde" type="date" defaultValue={sp.desde ?? ''} className="rj-input" title="Desde" />
           <input name="hasta" type="date" defaultValue={sp.hasta ?? ''} className="rj-input" title="Hasta" />
@@ -55,7 +56,7 @@ export default async function Panel({ searchParams }: { searchParams: Promise<{ 
         </div>
         <div className="rj-card">
           <p className="text-sm font-black">Ventas por línea{filtrado ? ' (filtrado)' : ''}</p>
-          {porLinea.length === 0 && <p className="text-sm opacity-60">Sin ventas en el filtro.</p>}
+          {porLinea.length === 0 && <p className="text-sm text-[#3f3f46]">Sin ventas en el filtro.</p>}
           {porLinea.map((l) => {
             const max = Math.max(...porLinea.map((x) => Number(x.total)), 1);
             return (
@@ -67,10 +68,10 @@ export default async function Panel({ searchParams }: { searchParams: Promise<{ 
           })}
         </div>
         <div className="rj-card"><p className="text-sm font-black">Producción</p>{prod.map((p) => <p key={p.estado} className="text-sm">{p.estado}: {p.n}</p>)}
-          {aging.length > 0 && <><p className="mt-1 text-xs font-black uppercase opacity-60">Antigüedad OPs abiertas</p>{aging.map((a) => <p key={a.numero} className="text-sm">· {a.numero}: <b className={a.dias > 30 ? 'text-red-600' : ''}>{a.dias} días</b> ({a.estado})</p>)}</>}
+          {aging.length > 0 && <><p className="mt-1 text-xs font-black uppercase text-[#07503f]">Antigüedad OPs abiertas</p>{aging.map((a) => <p key={a.numero} className="text-sm">· {a.numero}: <b className={a.dias > 30 ? 'text-red-600' : ''}>{a.dias} días</b> ({a.estado})</p>)}</>}
         </div>
         <div className="rj-card"><p className="text-sm font-black">Calidad checklist</p>
-          {apto + noApto === 0 && <p className="text-sm opacity-60">Sin controles aún.</p>}
+          {apto + noApto === 0 && <p className="text-sm text-[#3f3f46]">Sin controles aún.</p>}
           {apto + noApto > 0 && (
             <>
               <div className="flex h-4 overflow-hidden rounded-full"><div className="bg-[#07503f]" style={{ width: `${Math.round((apto / (apto + noApto)) * 100)}%` }} /><div className="bg-red-500" style={{ width: `${Math.round((noApto / (apto + noApto)) * 100)}%` }} /></div>
