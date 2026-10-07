@@ -3,6 +3,7 @@ import { fmtUSD, fmtFechaAR } from '@/lib/formato-ar';
 import { FotoModelo } from '@/components/foto-modelo';
 import { HeroCampo } from '@/components/hero-3d';
 import { EMPRESA, waLink, WA_COTIZACION, WA_ALQUILER, PRODUCTOS_CONTACTO } from '@/lib/empresa';
+import Script from 'next/script';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
@@ -48,7 +49,9 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
   };
   return (
     <div className="min-h-screen bg-[#f1efdf] text-[#212529]">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Script id="jsonld-local" type="application/ld+json" strategy="afterInteractive">
+        {JSON.stringify(jsonLd)}
+      </Script>
 
       {/* Topbar */}
       <div className="bg-[#053d30] font-mono2 text-[11px] tracking-[.06em] text-white">
