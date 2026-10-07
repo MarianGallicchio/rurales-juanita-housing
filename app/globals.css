@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 16px;
+    background: #f1efdf;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+  h1, h2, .font-display { font-family: var(--font-serif), Georgia, serif; }
+  .font-mono2 { font-family: var(--font-mono), monospace; }
+  button, a {
+    min-height: 44px;
+  }
+  ::selection { background: #e8fe85; color: #07503f; }
+  @media (max-width: 380px) {
+    body { font-size: 15px; }
+  }
+}
+
+@layer components {
+  .rj-input { @apply w-full border bg-white p-3 text-sm focus:border-[#07503f] focus:outline-none; border-radius: 33px; border-color: #c3cda7; }
+  .rj-btn { @apply px-6 py-3 text-sm font-bold active:scale-[.98]; border-radius: 100px; }
+  .rj-btn-primary { @apply rj-btn bg-[#07503f] text-white; }
+  .rj-btn-accent { @apply rj-btn bg-[#e8fe85] text-[#053d30]; }
+  .rj-btn-green { @apply rj-btn bg-[#07503f] text-white; }
+  .rj-card { @apply border bg-white p-4 shadow-[0_14px_40px_rgba(28,28,28,.10)]; border-radius: 20px; border-color: rgba(7,80,63,.1); }
+  .rj-chip { @apply inline-block rounded-full px-2 py-0.5 text-[11px] font-black uppercase tracking-wide; }
+  .rj-gold { font-style: italic; font-weight: 300; background: linear-gradient(100deg,#c9a86a,#e8d5a2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .rj-pastel-0 { background: #b2cee7 !important; }
+  .rj-pastel-1 { background: #fceace !important; }
+  .rj-pastel-2 { background: #e6ecd5 !important; }
+  .rj-carbon { background: #1c1c1c; color: #fff; border: 1px dashed #3a3a3a; }
+  .rj-carbon .rj-eyebrow { border-color: #7089ba; color: #7089ba; }
+  .rj-tilt { transition: transform .18s ease, box-shadow .18s ease; }
+  .rj-tilt:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(7,80,63,.18); }
+  .rj-eyebrow { font-family: var(--font-mono), monospace; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #07503f; border: 1px dashed #07503f; border-radius: 100px; padding: 5px 14px; display: inline-block; }
+  .rj-eyebrow-ondark { color: #fff; border-color: rgba(255,255,255,.55); }
+  .rj-marquee { overflow: hidden; white-space: nowrap; }
+  .rj-marquee-track { display: inline-block; animation: rj-marquee 30s linear infinite; }
+}
+
+@keyframes rj-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media print {
+  @page { margin: 12mm; }
+  header, nav, aside { display: none !important; }
+  body { background: #fff !important; font-size: 12px; }
+  main { padding: 0 !important; }
+  a { text-decoration: none; color: inherit; }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Rurales Juanita · H.M Housing",
+  "short_name": "RJ Housing",
+  "description": "Cotizador, producción ISO 9001 y stock. 9 de Julio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07503f",
+  "theme_color": "#07503f",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
