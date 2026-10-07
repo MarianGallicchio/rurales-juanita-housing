@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import Script from "next/script";
 import "./globals.css";
 import "@designcodeio/threeui/style.css";
 
@@ -13,6 +14,9 @@ export const metadata: Metadata = {
   title: "Rurales Juanita · H.M Housing Module",
   description: "Cotizador, CRM, producción ISO 9001, stock, postventa y panel. 9 de Julio, Buenos Aires.",
   manifest: "/manifest.webmanifest",
+};
+
+export const viewport: Viewport = {
   themeColor: "#07503f",
 };
 
@@ -28,7 +32,9 @@ export default function RootLayout({
   return (
     <html lang="es-AR" suppressHydrationWarning>
       <body className={`${inter.variable} ${serif.variable} ${mono.variable} antialiased`}>
-        <script dangerouslySetInnerHTML={{ __html: `if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}` }} />
+        <Script id="sw-register" strategy="afterInteractive">
+          {`if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}`}
+        </Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
