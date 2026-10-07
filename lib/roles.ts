@@ -2,9 +2,10 @@ export type Rol = 'Administrador' | 'Ventas' | 'Produccion' | 'Compras' | 'Postv
 
 export const ROLES: Rol[] = ['Administrador', 'Ventas', 'Produccion', 'Compras', 'Postventa'];
 
-export type Modulo = 'catalogo' | 'cotizador' | 'crm' | 'produccion' | 'stock' | 'web' | 'postventa' | 'panel' | 'usuarios' | 'config';
+export type Modulo = 'catalogo' | 'cotizador' | 'crm' | 'produccion' | 'stock' | 'web' | 'postventa' | 'panel' | 'usuarios' | 'config' | 'computo';
 
 export const MODULOS: { key: Modulo; label: string; href: string; roles: Rol[] }[] = [
+  { key: 'computo', label: 'Cómputo', href: '/computo', roles: ['Administrador', 'Ventas', 'Produccion', 'Compras'] },
   { key: 'catalogo', label: 'Catálogo', href: '/catalogo', roles: ['Administrador', 'Ventas', 'Produccion', 'Compras'] },
   { key: 'cotizador', label: 'Cotizador', href: '/cotizador', roles: ['Administrador', 'Ventas'] },
   { key: 'crm', label: 'CRM', href: '/crm', roles: ['Administrador', 'Ventas', 'Postventa'] },
