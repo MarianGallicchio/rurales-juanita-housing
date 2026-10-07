@@ -20,11 +20,11 @@ for (const cod of ['TR-SEMI-12', 'BOX-15-A', 'MOD-AGRO-9']) {
 }
 // 2. Fichas BOX + MOD
 const box = await one(`select id from public.modelo where codigo='BOX-15-A'`);
-const boxItems = [['Estructura','Bastidor','Patín petrolero / skid'],['Superficie','Planta','15 m²'],['Dormitorio','Cama','1 de 2 plazas o 2 de 1 plaza'],['Sanitario','Baño','Completo con ducha'],['Cocina','Kitchenette','Bacha + anafe']];
+const boxItems = [['Estructura','Bastidor','Patín petrolero / skid'],['Superficie','Planta','15 m²'],['Dormitorio','Cama','1 de 2 plazas o 2 de 1 plaza'],['Sanitario','Baño','Completo con ducha, inodoro y bidet'],['Cocina','Cocina equipada','Mesada + heladera / frigobar + anafe']];
 for (let i = 0; i < boxItems.length; i++)
   await q(`insert into public.ficha_tecnica_item (modelo_id, grupo, item, especificacion, orden) values ($1,$2,$3,$4,$5) on conflict do nothing`, [box.id, ...boxItems[i], i]);
 const agro = await one(`select id from public.modelo where codigo='MOD-AGRO-9'`);
-const agroItems = [['Estructura','Bastidor','Perfil perimetral'],['Medidas','Planta','9.000 x 3.000 mm'],['Aislación','Muro','Poliuretano 50mm + termofoil'],['Instalación','Eléctrica','220V + ventilación']];
+const agroItems = [['Estructura','Bastidor','Perfil perimetral'],['Medidas','Planta','9.000 x 3.000 mm'],['Aislamiento','Muro','Poliuretano 50 mm + film térmico'],['Instalación','Eléctrica','220 V + ventilación']];
 for (let i = 0; i < agroItems.length; i++)
   await q(`insert into public.ficha_tecnica_item (modelo_id, grupo, item, especificacion, orden) values ($1,$2,$3,$4,$5) on conflict do nothing`, [agro.id, ...agroItems[i], i]);
 

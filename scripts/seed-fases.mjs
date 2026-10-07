@@ -14,7 +14,7 @@ const cats = [
   ['Trailers', 'trailers', 'Semirremolque, petrolero, tipo contenedor', 1],
   ['Contenedor técnico', 'contenedor-tecnico', 'Laboratorios, usinas, offshore, talleres', 2],
   ['Shelters', 'shelters', 'Tridimensionales, mini, TKR antivandálicos', 3],
-  ['Box modular', 'box-modular', 'Box 15 m2 descanso para estaciones de servicio', 4],
+  ['Box modular', 'box-modular', 'Box 15 m² descanso para estaciones de servicio', 4],
   ['Módulo habitacional', 'modulo-habitacional', 'Módulos y casillas rurales agro', 5],
 ];
 for (const [n, slug, d, o] of cats) {
@@ -27,10 +27,10 @@ const catT = await trailers, catB = await box;
 
 // --- F1 modelos
 await q(`insert into public.modelo (categoria_id, codigo, nombre, descripcion, largo_mm, ancho_mm, alto_mm, peso_kg, sistema_constructivo, precio_base_usd)
-  values ($1,'TR-SEMI-12','Semirremolque 12m','Caja 12.000mm, chasis 2 vigas doble T 300mm, eje 12t, ABS',15300,2600,3000,8500,'Panel antigolpes',28500)
+  values ($1,'TR-SEMI-12','Semirremolque 12 m','Caja 12.000 mm, chasis 2 vigas doble T 300 mm, eje 12 t, ABS',15300,2600,3000,8500,'Panel antigolpes',28500)
   on conflict (codigo) do update set precio_base_usd=excluded.precio_base_usd`, [catT.id]);
 await q(`insert into public.modelo (categoria_id, codigo, nombre, descripcion, largo_mm, ancho_mm, alto_mm, peso_kg, sistema_constructivo, precio_base_usd)
-  values ($1,'BOX-15-A','Box modular 15m2 A','1 cama 2 plazas, baño completo, kitchenette',6000,2500,2800,3200,'Autoportante poliuretano',18500)
+  values ($1,'BOX-15-A','Box modular 15 m² A','1 cama 2 plazas, baño completo, cocina equipada',6000,2500,2800,3200,'Autoportante poliuretano',18500)
   on conflict (codigo) do update set precio_base_usd=excluded.precio_base_usd`, [catB.id]);
 await q(`insert into public.modelo (categoria_id, codigo, nombre, descripcion, largo_mm, ancho_mm, alto_mm, precio_base_usd)
   values ($1,'MOD-AGRO-9','Módulo habitacional 9m','Casilla rural dormitorio+baño',9000,3000,2800,22000)
@@ -50,7 +50,7 @@ const ops = [
   ['seguridad','Detector de humo','',120,'por_unidad'],
   ['seguridad','Barra antipánico','Puerta salida',210,'por_unidad'],
   ['amoblamiento','Cama 2 plazas','Con colchón',550,'por_unidad'],
-  ['amoblamiento','Kitchenette','Bacha + anafe',680,'fijo'],
+  ['amoblamiento','Cocina equipada','Mesada + heladera / frigobar + anafe',680,'fijo'],
   ['amoblamiento','Baño completo','Inodoro + ducha',1400,'fijo'],
   ['aislacion','Poliuretano alta densidad 50mm','Térmico/acústico',38,'por_m2'],
   ['aberturas','Abertura DVH','Ventana 100x100',340,'por_unidad'],
@@ -66,7 +66,7 @@ for (const o of opIds) {
   await q(`insert into public.modelo_opcion (modelo_id, opcion_id) values ($1,$2) on conflict do nothing`, [modSemi.id, o.id]);
 }
 // ficha técnica semirremolque
-const ficha = [['Estructura','Chasis','2 vigas doble T 300mm'],['Ejes','Eje tubular','12t con ballestas'],['Frenos','ABS','2 patas mecánicas'],['Caja','Largo','12.000mm']];
+const ficha = [['Estructura','Chasis','2 vigas doble T 300 mm'],['Ejes','Eje tubular','12 t con elásticos de ballesta'],['Frenos','ABS + mecánico','Freno de estacionamiento mecánico'],['Caja','Largo','12.000 mm']];
 for (let i = 0; i < ficha.length; i++) {
   await q(`insert into public.ficha_tecnica_item (modelo_id, grupo, item, especificacion, orden) values ($1,$2,$3,$4,$5) on conflict do nothing`,
     [modSemi.id, ficha[i][0], ficha[i][1], ficha[i][2], i]);

@@ -73,8 +73,8 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
             <span className="leading-none"><span className="font-display text-xl font-semibold">Rurales Juanita</span><br /><span className="font-mono2 text-[10px] uppercase tracking-[.18em] opacity-75">Modulares & transportables</span></span>
           </Link>
           <nav className="hidden gap-1 text-sm lg:flex">
-            {[['Productos', '#productos'], ['Casos', '#casos'], ['Empresa', '#empresa'], ['Contacto', '#contacto']].map(([t, h]) => (
-              <a key={h} href={h} className="rounded-full px-3 py-2 hover:bg-white/10">{t}</a>
+            {[['Productos', '#productos'], ['Fichas', '/fichas'], ['Casos', '#casos'], ['Empresa', '#empresa'], ['Contacto', '#contacto']].map(([t, h]) => (
+              <a key={h} href={h} className="rounded-full px-3 py-2 text-white hover:bg-white/10">{t}</a>
             ))}
           </nav>
           <div className="flex gap-2">
@@ -89,12 +89,14 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <div className="relative">
           <HeroCampo variant="sunset" />
           <div className="absolute inset-x-4 bottom-4 rounded-[20px] p-5 text-center text-white md:inset-x-16">
-            <p className="rj-eyebrow rj-eyebrow-ondark">Planta industrial · 9 de Julio, Buenos Aires</p>
-            <h1 className="mx-auto mt-3 max-w-3xl font-display text-4xl font-light leading-tight md:text-6xl">Soluciones habitacionales modulares, donde la infraestructura fija no llega.</h1>
-            <p className="mx-auto mt-2 max-w-2xl text-white/90">Unidades rodantes y módulos transportables para petróleo, minería, obra y agro. Diseño propio, fabricación integral y montaje llave en mano.</p>
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
+            <div className="vector-dots-ondark pointer-events-none absolute inset-0 rounded-[20px] opacity-40" />
+            <p className="rj-eyebrow rj-eyebrow-ondark relative">Planta industrial · 9 de Julio, Buenos Aires</p>
+            <h1 className="hero-legible relative mx-auto mt-3 max-w-3xl font-display text-4xl font-light leading-tight md:text-6xl">Soluciones habitacionales modulares, donde la infraestructura fija no llega.</h1>
+            <p className="hero-pill hero-legible relative mx-auto mt-2 max-w-2xl rounded-xl p-2 text-sm text-white">Unidades rodantes y módulos transportables para petróleo, minería, obra y agro. Diseño propio, fabricación integral y montaje llave en mano.</p>
+            <div className="relative mt-4 flex flex-wrap justify-center gap-3">
               <a href="#productos" className="rj-btn bg-white text-[#212529]">Conocé los productos</a>
-              <a href="#contacto" className="rj-btn border border-[#e8fe85] text-[#e8fe85]">Pedir cotización</a>
+              <a href="/fichas" className="rj-btn collage-sticker bg-[#e8fe85] text-[#053d30]">Fichas técnicas ✂</a>
+              <a href="#contacto" className="rj-btn border border-[#e8fe85] bg-[#053d30]/70 text-[#e8fe85]">Pedir cotización</a>
             </div>
             <div className="mt-4 flex flex-wrap justify-center gap-2 font-mono2 text-[10px] uppercase tracking-[.14em]">
               {['ISO 9001 · Bureau Veritas', 'Homologados YPF', 'Llave en mano'].map((b) => (
@@ -108,8 +110,8 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
       {/* Clientes */}
       <section className="mx-auto max-w-6xl px-4 py-12 text-center">
         <p className="rj-eyebrow">Homologaciones y certificaciones</p>
-        <h2 className="mt-3 font-display text-4xl font-medium">Confían en <em className="rj-gold not-italic text-[#07503f]">nosotros</em></h2>
-        <p className="mx-auto mt-1 max-w-2xl text-[#6d6d6d]">Unidades auditadas y homologadas por operadoras y certificadoras líderes del país.</p>
+        <h2 className="mt-3 font-display text-4xl font-medium">Confían en <em className="not-italic text-[#07503f]">nosotros</em></h2>
+        <p className="mx-auto mt-1 max-w-2xl text-[#3f3f46]">Unidades auditadas y homologadas por operadoras y certificadoras líderes del país.</p>
         <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">
           {CLIENTES.map(([n, d]) => (
             <div key={n} className="rj-card"><p className="font-bold uppercase tracking-wide">{n}</p><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#6d6d6d]">{d}</p></div>
@@ -121,13 +123,13 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
       <section id="productos" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-8">
         <p className="rj-eyebrow">Líneas de producto</p>
         <h2 className="mt-3 max-w-2xl font-display text-4xl font-medium leading-tight">Infraestructura móvil para cada demanda específica.</h2>
-        <p className="mt-1 max-w-2xl text-[#6d6d6d]">Cada línea se fabrica a medida según clima, transporte, térmica y seguridad.</p>
+        <p className="mt-1 max-w-2xl text-[#3f3f46]">Cada línea se fabrica a medida según clima, transporte, térmica y seguridad.</p>
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           {cats.map((c, ci) => (
             <div key={c.slug} className={`rj-card rj-tilt ${['', 'rj-pastel-0', 'rj-pastel-1', 'rj-pastel-2'][ci % 4]}`}>
               <p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#07503f]">{c.slug.replace(/-/g, ' ')}</p>
               <h3 className="font-display text-2xl font-medium">{c.nombre}</h3>
-              <p className="text-sm text-[#6d6d6d]">{c.descripcion}</p>
+              <p className="text-sm text-[#3f3f46]">{c.descripcion}</p>
               <div className="mt-2 grid grid-cols-1 gap-2">
                 {mods.filter((m) => m.cat === c.nombre).map((m) => (
                   <div key={m.codigo} className="flex items-center gap-3 rounded-2xl bg-[#f1efdf] p-2">
@@ -159,11 +161,11 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <h2 className="mt-3 font-display text-4xl font-medium">Soluciones probadas en <em className="text-[#07503f]">entornos exigentes.</em></h2>
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
           {([
-            ['Petróleo · Patagonia', 'Campamentos y obradores', 'Oficinas, dormitorios, comedor y company man. Homologados Pluspetrol / Dipp.', ['LLAVE EN MANO', 'CLIMA EXTREMO']],
+            ['Petróleo · Patagonia', 'Campamentos y obradores', 'Oficinas, dormitorios, comedor y Company Man. Homologados Pluspetrol / Dipp.', ['LLAVE EN MANO', 'CLIMA EXTREMO']],
             ['Energía · Telecom', 'Contenedores y shelters técnicos', 'Laboratorios, usinas, radar y telecom. Alta rigidez para traslado continuo.', ['A MEDIDA', 'ISO 9001']],
-            ['Agro · Ruta', 'Box hotel + casillas rurales', '15 m² con habitación, baño y kitchenette. Viviendas listas para habitar.', ['15 M²', 'ENTREGA RÁPIDA']],
+            ['Agro · Ruta', 'Box hotel + casillas rurales', '15 m² con habitación, baño y cocina equipada. Viviendas listas para habitar.', ['15 M²', 'ENTREGA RÁPIDA']],
           ] as [string, string, string, string[]][]).map(([tag, t, d, chips], i) => (
-            <div key={i} className="rj-card"><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#07503f]">{tag}</p><h3 className="font-display text-2xl">{t}</h3><p className="text-sm text-[#6d6d6d]">{d}</p><p className="mt-2 flex gap-2">{chips.map((c) => <span key={c} className="rounded-full bg-[#f1efdf] px-2 py-1 font-mono2 text-[10px]">{c}</span>)}</p></div>
+            <div key={i} className="rj-card"><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#07503f]">{tag}</p><h3 className="font-display text-2xl">{t}</h3><p className="text-sm text-[#3f3f46]">{d}</p><p className="mt-2 flex gap-2">{chips.map((c) => <span key={c} className="rounded-full bg-[#f1efdf] px-2 py-1 font-mono2 text-[10px]">{c}</span>)}</p></div>
           ))}
         </div>
         <div className="rj-card mt-4 flex flex-wrap items-center justify-between gap-3 bg-[#07503f] text-white">
@@ -195,9 +197,9 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <div>
           <p className="rj-eyebrow">Módulos habitacionales transportables</p>
           <h2 className="mt-3 font-display text-4xl font-medium">Comodidad y confort en un solo ambiente transportable.</h2>
-          <p className="mt-2 text-[#6d6d6d]">Unidades de 15 m² para estaciones de servicio y puntos estratégicos. Habitación con cama de 2 plazas o dos de 1 plaza, baño completo con ducha, inodoro, bidet y vanitory, y kitchenette equipada.</p>
+          <p className="mt-2 text-[#3f3f46]">Unidades de 15 m² para estaciones de servicio y puntos estratégicos. Habitación con cama de 2 plazas o dos de 1 plaza, baño completo con ducha, inodoro, bidet y vanitorio, y cocina equipada.</p>
           <ul className="mt-3 space-y-2 text-sm font-medium">
-            {['Aire acondicionado y barrera de vapor anti-condensación', 'Interiores modernos, cálidos y luminosos', 'Instalación eléctrica completa y amplia ventilación', 'Instalación rápida sobre escenarios propios'].map((li) => <li key={li} className="flex gap-2"><span className="font-bold text-[#07503f]">✓</span>{li}</li>)}
+            {['Aire acondicionado y barrera de vapor anticondensación', 'Interiores modernos, cálidos y luminosos', 'Instalación eléctrica completa y amplia ventilación', 'Instalación rápida sobre escenarios propios'].map((li) => <li key={li} className="flex gap-2"><span className="font-bold text-[#07503f]">✓</span>{li}</li>)}
           </ul>
         </div>
         <FotoModelo url={(mods.find((m) => m.codigo === 'BOX-15-A')?.foto) ?? null} codigo="BOX-15-A" className="h-80 w-full rounded-[30px] object-cover" />
@@ -207,10 +209,10 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="rj-carbon rounded-[20px] p-6">
         <p className="rj-eyebrow">Datos técnicos</p>
-        <h2 className="mt-3 font-display text-4xl font-medium">Ingeniería declarada, <em className="rj-gold">no promesas.</em></h2>
+        <h2 className="mt-3 font-display text-4xl font-medium">Ingeniería declarada, <em className="not-italic text-[#e8fe85]">no promesas.</em></h2>
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {[['Chasis RJ-SR-300', 'Doble T de 300 mm', 'Vigas de 7 mm de alma, eje tubular para 12 toneladas con ABS y perno normalizado.'], ['Módulo RJ-MH-01', 'Aislación total', 'Polietileno expandido en paredes y techo más termofoil, con barrera anti-condensación.'], ['Instalaciones', '220 V + agua', 'Disyuntor y térmica con LED por sector; agua por termofusión de ½″ tipo Aqua-System.']].map(([tag, t, d]) => (
-            <div key={t} className="rounded-2xl border border-dashed border-[#3a3a3a] p-4"><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#7089ba]">{tag}</p><h3 className="font-display text-2xl">{t}</h3><p className="text-sm text-white/75">{d}</p></div>
+          {[['Chasis RJ-SR-300', 'Doble T de 300 mm', 'Vigas de 7 mm de alma, eje tubular para 12 toneladas con ABS y perno normalizado.'], ['Módulo RJ-MH-01', 'Aislamiento total', 'Poliuretano expandido en paredes y techo más film térmico, con barrera anticondensación.'], ['Instalaciones', '220 V + agua', 'Caja disyuntora y térmica con LED por sector; agua por termofusión de ½″ tipo Aqua-System.']].map(([tag, t, d]) => (
+            <div key={t} className="rounded-2xl border border-dashed border-[#3a3a3a] p-4"><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#a8bde0]">{tag}</p><h3 className="font-display text-2xl text-white">{t}</h3><p className="text-sm text-white">{d}</p></div>
           ))}
         </div>
         </div>

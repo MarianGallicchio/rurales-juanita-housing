@@ -87,7 +87,9 @@
   .rj-btn-green { @apply rj-btn bg-[#07503f] text-white; }
   .rj-card { @apply border bg-white p-4 shadow-[0_14px_40px_rgba(28,28,28,.10)]; border-radius: 20px; border-color: rgba(7,80,63,.1); }
   .rj-chip { @apply inline-block rounded-full px-2 py-0.5 text-[11px] font-black uppercase tracking-wide; }
-  .rj-gold { font-style: italic; font-weight: 300; background: linear-gradient(100deg,#c9a86a,#e8d5a2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  /* CONTRASTE: dorado sólido legible sobre claro (antes degradado transparente invisible) */
+  .rj-gold { font-style: normal; font-weight: 700; color: #6b4e00; }
+  .rj-gold-ondark { font-style: normal; font-weight: 700; color: #e8fe85; }
   .rj-pastel-0 { background: #b2cee7 !important; }
   .rj-pastel-1 { background: #fceace !important; }
   .rj-pastel-2 { background: #e6ecd5 !important; }
@@ -95,10 +97,25 @@
   .rj-carbon .rj-eyebrow { border-color: #7089ba; color: #7089ba; }
   .rj-tilt { transition: transform .18s ease, box-shadow .18s ease; }
   .rj-tilt:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(7,80,63,.18); }
-  .rj-eyebrow { font-family: var(--font-mono), monospace; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #07503f; border: 1px dashed #07503f; border-radius: 100px; padding: 5px 14px; display: inline-block; }
-  .rj-eyebrow-ondark { color: #fff; border-color: rgba(255,255,255,.55); }
+  .rj-eyebrow { font-family: var(--font-mono), monospace; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #07503f; border: 1px dashed #07503f; border-radius: 100px; padding: 5px 14px; display: inline-block; background: rgba(255,255,255,.85); }
+  /* CONTRASTE: pastilla oscura + lima sólida (antes blanco fino sobre foto clara) */
+  .rj-eyebrow-ondark { color: #e8fe85; border-color: #e8fe85; background: rgba(5,61,48,.82); }
   .rj-marquee { overflow: hidden; white-space: nowrap; }
   .rj-marquee-track { display: inline-block; animation: rj-marquee 30s linear infinite; }
+
+  /* COLLAGE ART + VECTOR ART — recortes, cinta, stickers, trama vectorial */
+  .vector-dots { background-image: radial-gradient(rgba(7,80,63,.16) 1.2px, transparent 1.2px); background-size: 14px 14px; }
+  .vector-dots-ondark { background-image: radial-gradient(rgba(232,254,133,.22) 1.2px, transparent 1.2px); background-size: 14px 14px; }
+  .collage-tape { position: relative; }
+  .collage-tape::before { content: ''; position: absolute; top: -12px; left: 50%; width: 110px; height: 26px; transform: translateX(-50%) rotate(-4deg); background: rgba(232,254,133,.85); border-left: 2px dashed rgba(7,80,63,.35); border-right: 2px dashed rgba(7,80,63,.35); box-shadow: 0 2px 6px rgba(0,0,0,.12); z-index: 2; }
+  .collage-sticker { border: 3px solid #fff; box-shadow: 4px 4px 0 #07503f; transform: rotate(-1deg); }
+  .collage-sticker-r { transform: rotate(1.2deg); }
+  .collage-torn { clip-path: polygon(0 3%, 4% 0, 96% 1%, 100% 4%, 99% 96%, 95% 100%, 5% 99%, 0 96%); }
+  .collage-caption { display: inline-block; background: #212529; color: #e8fe85; font-family: var(--font-mono), monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; padding: 4px 10px; transform: rotate(-1.5deg); }
+  .collage-frame { background: #fff; padding: 10px 10px 34px; box-shadow: 6px 6px 0 rgba(7,80,63,.9); border: 2px solid #212529; transform: rotate(-1deg); }
+  .text-outline { -webkit-text-stroke: 1.5px #07503f; color: transparent; }
+  .hero-legible { text-shadow: 0 2px 18px rgba(0,0,0,.65), 0 1px 3px rgba(0,0,0,.8); }
+  .hero-pill { background: rgba(5,61,48,.78); backdrop-filter: blur(6px); border: 1px solid rgba(232,254,133,.5); }
 }
 
 @keyframes rj-marquee {
