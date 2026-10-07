@@ -38,7 +38,7 @@ export default async function FichaWeb({ params }: { params: Promise<{ codigo: s
     <main className="mx-auto max-w-2xl bg-white p-6 text-sm">
       <p className="font-black text-[#07503f]">RURALES JUANITA · H.M HOUSING MODULE — FICHA TÉCNICA</p>
       <h1 className="mt-2 text-xl font-black">{m.codigo} — {m.nombre}</h1>
-      <p className="opacity-70">{m.cat} · {m.largo_mm}x{m.ancho_mm}x{m.alto_mm} mm · {m.superficie_m2 ?? '—'} m² · {m.peso_kg ?? '—'} kg</p>
+      <p className="text-[#3f3f46]">{m.cat} · {m.largo_mm}x{m.ancho_mm}x{m.alto_mm} mm · {m.superficie_m2 ?? '—'} m² · {m.peso_kg ?? '—'} kg</p>
       <p className="mt-1">{m.descripcion}</p>
       <p className="mt-1 font-black">Base {fmtUSD(Number(m.precio_base_usd))} <span className="font-normal opacity-60">(más opciones y flete; ver cotizador)</span></p>
       <div className="mt-3 grid grid-cols-2 gap-2 print:grid-cols-2">

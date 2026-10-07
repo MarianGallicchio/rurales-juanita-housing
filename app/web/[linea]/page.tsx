@@ -28,14 +28,14 @@ export default async function Linea({ params }: { params: Promise<{ linea: strin
       <main className="mx-auto max-w-4xl p-4">
         <p className="rj-eyebrow">Línea de producto</p>
         <h1 className="mt-2 font-display text-4xl font-medium">{cat.nombre}</h1>
-        <p className="mt-1 text-[#6d6d6d]">{cat.descripcion}</p>
+        <p className="mt-1 text-[#3f3f46]">{cat.descripcion}</p>
         <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
           {mods.length === 0 && <p className="text-sm opacity-60">Modelos en preparación. Pedilos por WhatsApp.</p>}
           {mods.map((m) => (
             <div key={m.codigo} className="rj-card">
               <FotoModelo url={m.foto} codigo={m.codigo} />
               <p className="mt-2 font-bold">{m.codigo} — {m.nombre}</p>
-              <p className="text-sm opacity-70">{m.largo_mm}x{m.ancho_mm} mm · Base {fmtUSD(Number(m.precio_base_usd))}</p>
+              <p className="text-sm text-[#3f3f46]">{m.largo_mm}x{m.ancho_mm} mm · Base {fmtUSD(Number(m.precio_base_usd))}</p>
               <div className="mt-1 flex gap-2">
                 <Link href={`/web/ficha/${m.codigo}`} className="rounded-full bg-slate-200 px-3 py-1 font-mono2 text-[10px] uppercase">Ficha ↓</Link>
                 <a href={waLink(`${WA_COTIZACION} Me interesa ${m.codigo}.`)} target="_blank" className="rounded-full bg-[#07503f] px-3 py-1 font-mono2 text-[10px] uppercase text-white">Consultar</a>

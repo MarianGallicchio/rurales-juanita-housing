@@ -203,7 +203,7 @@ export default async function Cotizador({ searchParams }: { searchParams: Promis
           <div key={c.id} className="rj-card flex items-center justify-between gap-2">
             <div>
               <p className="font-bold">{c.numero}{Number(c.version) > 1 ? ` v${c.version}` : ''} · <span className="rj-chip bg-slate-200">{c.estado}</span> {c.tipo === 'alquiler' && <span className="rj-chip bg-[#e8fe85]">alquiler</span>}</p>
-              <p className="text-sm opacity-70">{fmtUSD(Number(c.total_usd))} · {fmtARS(Number(c.total_ars))}</p>
+              <p className="text-sm text-[#3f3f46]">{fmtUSD(Number(c.total_usd))} · {fmtARS(Number(c.total_ars))}</p>
               {c.share && <a href={`/s/${c.share}`} target="_blank" className="font-mono2 text-[10px] underline">link público →</a>}
             </div>
             <div className="flex flex-wrap gap-1">
@@ -233,7 +233,7 @@ export default async function Cotizador({ searchParams }: { searchParams: Promis
             <select name="mod" defaultValue={modSel?.id ?? ''} className="rj-input">{mods.map((m) => <option key={m.id} value={m.id}>{m.codigo} — {m.nombre}</option>)}</select>
             <button className="rj-btn-primary">Cargar</button>
           </div>
-          {modSel && <p className="mt-1 text-xs opacity-70">Costo materiales según BOM vigente: <b>{fmtUSD(Number(bomTotal))}</b> · Superficie {modSel.sup ?? '—'} m² (para opciones por m²)</p>}
+          {modSel && <p className="mt-1 text-xs text-[#3f3f46]">Costo materiales según BOM vigente: <b>{fmtUSD(Number(bomTotal))}</b> · Superficie {modSel.sup ?? '—'} m² (para opciones por m²)</p>}
         </form>
         <form action={crearCotizacion}>
           <div className="flex flex-col gap-3">

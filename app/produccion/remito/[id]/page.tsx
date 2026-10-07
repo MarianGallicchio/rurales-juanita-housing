@@ -19,7 +19,7 @@ export default async function Remito({ params }: { params: Promise<{ id: string 
         {emp?.logo_url && <img src={emp.logo_url} alt="logo" className="h-14 object-contain" />}
         <div>
           <p className="font-display text-xl font-semibold">{emp?.razon_social}</p>
-          <p className="text-xs opacity-70">{emp?.domicilio} · {emp?.telefonos}</p>
+          <p className="text-xs text-[#3f3f46]">{emp?.domicilio} · {emp?.telefonos}</p>
         </div>
         <div className="ml-auto rounded-2xl border-2 border-[#07503f] px-4 py-2 text-center">
           <p className="font-display text-2xl">R</p>

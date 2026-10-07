@@ -116,7 +116,7 @@ export function ComputoClient({ initialProject }: { initialProject: Construction
           {project.rubros.map((r) => (
             <section key={r.id} className="rj-card">
               <p className="font-bold">Rubro {r.number} — {r.name}</p>
-              <p className="text-xs opacity-70">{r.description} · Subtotal {fmtARS(summary.rubroSubtotals[r.id] ?? 0)}</p>
+              <p className="text-xs text-[#3f3f46]">{r.description} · Subtotal {fmtARS(summary.rubroSubtotals[r.id] ?? 0)}</p>
               <div className="mt-2 flex flex-col gap-1">
                 {(r.items || []).slice(0, 12).map((it) => (
                   <div key={it.id} className="grid grid-cols-[1fr_70px_90px] items-center gap-1 text-sm">
@@ -149,7 +149,7 @@ export function ComputoClient({ initialProject }: { initialProject: Construction
             {MATERIALS_DATABASE.slice(0, 40).map((m) => (
               <div key={m.id} className="rounded border p-2 text-sm">
                 <p className="font-semibold">{m.code} — {m.name}</p>
-                <p className="text-xs opacity-70">{m.category} · {m.unit} · {m.source} · {m.lastUpdated}</p>
+                <p className="text-xs text-[#3f3f46]">{m.category} · {m.unit} · {m.source} · {m.lastUpdated}</p>
                 <p className="text-sm font-bold">{fmtARS(m.referencePrice)}</p>
               </div>
             ))}
@@ -163,7 +163,7 @@ export function ComputoClient({ initialProject }: { initialProject: Construction
           <p className="font-bold">Histórico INDEC / CAMARCO / UOCRA ({history.length} períodos)</p>
           <div className="mt-2 overflow-x-auto">
             <table className="w-full text-xs">
-              <thead><tr className="text-left opacity-70"><th>Período</th><th>ICC gral</th><th>Materiales</th><th>Mano obra</th><th>CAMARCO</th><th>$/m² ref</th></tr></thead>
+              <thead><tr className="text-left text-[#3f3f46]"><th>Período</th><th>ICC gral</th><th>Materiales</th><th>Mano obra</th><th>CAMARCO</th><th>$/m² ref</th></tr></thead>
               <tbody>
                 {history.map((h) => (
                   <tr key={h.period} className="border-t">
@@ -184,7 +184,7 @@ export function ComputoClient({ initialProject }: { initialProject: Construction
             {UOCRA_LABOR_DATABASE.map((u) => (
               <div key={u.id} className="rounded border p-2 text-sm">
                 <p className="font-semibold">{u.categoryName}</p>
-                <p className="text-xs opacity-70">{u.source} · {u.period} · cargas {u.socialChargesPercentage}%</p>
+                <p className="text-xs text-[#3f3f46]">{u.source} · {u.period} · cargas {u.socialChargesPercentage}%</p>
                 <p>Jornal efectivo: <b>{fmtARS(u.effectiveDailyCost)}</b> · Hora: <b>{fmtARS(u.effectiveHourlyCost)}</b></p>
               </div>
             ))}

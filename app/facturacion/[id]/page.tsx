@@ -28,8 +28,8 @@ export default async function Factura({ params }: { params: Promise<{ id: string
             : <span className="grid h-14 w-14 place-items-center rounded-lg bg-[#e8fe85] font-black text-[#053d30]">RJ</span>}
           <div>
             <p className="font-display text-xl font-semibold">{emp?.razon_social ?? EMPRESA.nombre}</p>
-            <p className="text-xs opacity-70">{emp?.domicilio} · {emp?.telefonos} · {emp?.email}</p>
-            <p className="text-xs opacity-70">CUIT {cuitEmp} · IVA Responsable Inscripto</p>
+            <p className="text-xs text-[#3f3f46]">{emp?.domicilio} · {emp?.telefonos} · {emp?.email}</p>
+            <p className="text-xs text-[#3f3f46]">CUIT {cuitEmp} · IVA Responsable Inscripto</p>
           </div>
         </div>
         <div className="rounded-2xl border-2 border-[#07503f] px-4 py-2 text-center">

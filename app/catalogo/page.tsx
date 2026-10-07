@@ -144,7 +144,7 @@ export default async function Catalogo() {
               <div key={m.codigo} className={`rounded-xl border bg-white p-3 ${completa ? '' : 'border-amber-400'}`}>
                 <FotoModelo url={m.portada_url} codigo={m.codigo} />
                 <p className="mt-2 font-bold">{m.codigo} — {m.nombre} {m.activo ? '' : '· INACTIVO'}</p>
-                <p className="text-sm opacity-70">{m.cat} · {fmtUSD(Number(m.precio_base_usd))} · {m.largo_mm}x{m.ancho_mm}x{m.alto_mm}mm ({m.superficie_m2 ?? '—'} m²)</p>
+                <p className="text-sm text-[#3f3f46]">{m.cat} · {fmtUSD(Number(m.precio_base_usd))} · {m.largo_mm}x{m.ancho_mm}x{m.alto_mm}mm ({m.superficie_m2 ?? '—'} m²)</p>
                 <p className="text-xs">{completa ? '✓ ficha completa' : `⚠ ficha incompleta: fotos ${m.fotos}, portada ${m.portada}, ítems ${m.items}`} · {m.cotiz} cotizaciones</p>
                 <form action={toggleActivo} className="mt-1">
                   <input type="hidden" name="id" value={m.id} />

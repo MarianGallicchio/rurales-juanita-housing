@@ -63,7 +63,7 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
       <h1 className="mt-3 text-xl font-bold">{c.numero}{Number(c.version) > 1 ? ` v${c.version}` : ''} — {c.estado}{c.tipo === 'alquiler' ? ' · ALQUILER' : ''}</h1>
       <p>Cliente: {c.razon_social ?? '—'} · Validez {c.validez_dias} días · Entrega {c.plazo_entrega_dias} días · Pago: {c.condicion_pago}</p>
       {c.share_token && <p className="text-xs print:hidden">Link público: <a className="underline" href={`/s/${c.share_token}`} target="_blank">/s/{c.share_token}</a> (válido en borrador/enviada)</p>}
-      {items.map((it: any) => <div key={it.id}><p>· {it.cantidad}x {it.codigo} {it.nombre}{(it.largo_mm || it.ancho_mm) ? ` (${it.largo_mm ?? '—'}x${it.ancho_mm ?? '—'}x${it.alto_mm ?? '—'}mm)` : ''} — mat {fmtUSD(Number(it.costo_materiales_usd))} + MO {fmtUSD(Number(it.costo_mano_obra_usd))}</p>{opcRows.filter((o: any) => o.item_id === it.id).map((o: any, i: number) => <p key={i} className="ml-4 text-xs opacity-70">+ {o.nombre} — {fmtUSD(Number(o.precio_usd))}</p>)}</div>)}
+      {items.map((it: any) => <div key={it.id}><p>· {it.cantidad}x {it.codigo} {it.nombre}{(it.largo_mm || it.ancho_mm) ? ` (${it.largo_mm ?? '—'}x${it.ancho_mm ?? '—'}x${it.alto_mm ?? '—'}mm)` : ''} — mat {fmtUSD(Number(it.costo_materiales_usd))} + MO {fmtUSD(Number(it.costo_mano_obra_usd))}</p>{opcRows.filter((o: any) => o.item_id === it.id).map((o: any, i: number) => <p key={i} className="ml-4 text-xs text-[#3f3f46]">+ {o.nombre} — {fmtUSD(Number(o.precio_usd))}</p>)}</div>)}
       <p className="mt-2">Margen {c.margen_pct}% · Flete {fmtUSD(Number(c.flete_usd))} · IVA {c.iva_pct}% · TC {c.tipo_cambio} ({fmtFechaAR(c.fecha_tipo_cambio)})</p>
       <p className="text-lg font-black">Total {fmtUSD(Number(c.total_usd))} = {fmtARS(Number(c.total_ars))}</p>
       {prev && (
@@ -75,7 +75,7 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
         <div className="mt-3 rounded-xl border p-3">
           <p className="text-xs font-black uppercase">Aceptada con firma digital</p>
           <img src={c.firma_url} alt="firma" className="mt-1 h-24 rounded border bg-white" />
-          <p className="text-xs opacity-70">{c.firmante_nombre} · {fmtFechaHoraAR(c.firma_fecha)}</p>
+          <p className="text-xs text-[#3f3f46]">{c.firmante_nombre} · {fmtFechaHoraAR(c.firma_fecha)}</p>
         </div>
       )}
       {c.estado === 'enviada' && !c.firma_url && (

@@ -51,7 +51,7 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Topbar */}
-      <div className="bg-[#053d30] font-mono2 text-[11px] tracking-[.06em] text-white/80">
+      <div className="bg-[#053d30] font-mono2 text-[11px] tracking-[.06em] text-white">
         <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-2 px-4 py-[7px]">
           <span>Planta industrial · {EMPRESA.direccion}</span>
           <span className="flex gap-4"><span><a href="tel:+542317472390" className="text-[#e8fe85]">2317-472390</a> · <a href={`mailto:${EMPRESA.email}`} className="text-[#e8fe85]">{EMPRESA.email}</a></span><span className="hidden md:inline">ISO 9001 · {EMPRESA.horario}</span></span>
@@ -70,7 +70,7 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
           <Link href="/web" className="flex items-center gap-2">
             <span className="grid h-9 w-9 place-items-center rounded-lg bg-[#e8fe85] font-black text-[#053d30]">RJ</span>
-            <span className="leading-none"><span className="font-display text-xl font-semibold">Rurales Juanita</span><br /><span className="font-mono2 text-[10px] uppercase tracking-[.18em] opacity-75">Modulares & transportables</span></span>
+            <span className="leading-none"><span className="font-display text-xl font-semibold">Rurales Juanita</span><br /><span className="font-mono2 text-[10px] uppercase tracking-[.18em] text-[#e8fe85]">Modulares & transportables</span></span>
           </Link>
           <nav className="hidden gap-1 text-sm lg:flex">
             {[['Productos', '#productos'], ['Fichas', '/fichas'], ['Casos', '#casos'], ['Empresa', '#empresa'], ['Contacto', '#contacto']].map(([t, h]) => (
@@ -114,7 +114,7 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <p className="mx-auto mt-1 max-w-2xl text-[#3f3f46]">Unidades auditadas y homologadas por operadoras y certificadoras líderes del país.</p>
         <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">
           {CLIENTES.map(([n, d]) => (
-            <div key={n} className="rj-card"><p className="font-bold uppercase tracking-wide">{n}</p><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#6d6d6d]">{d}</p></div>
+            <div key={n} className="rj-card"><p className="font-bold uppercase tracking-wide">{n}</p><p className="font-mono2 text-[10px] uppercase tracking-[.14em] text-[#3f3f46]">{d}</p></div>
           ))}
         </div>
       </section>
@@ -136,7 +136,7 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
                     <FotoModelo url={m.foto} codigo={m.codigo} className="h-16 w-24 shrink-0 rounded-xl object-cover" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-bold">{m.codigo} — {m.nombre}</p>
-                      <p className="text-xs opacity-70">Base {fmtUSD(Number(m.precio_base_usd))}{tc ? ` · TC $${tc.v}` : ''}</p>
+                      <p className="text-xs text-[#3f3f46]">Base {fmtUSD(Number(m.precio_base_usd))}{tc ? ` · TC $${tc.v}` : ''}</p>
                     </div>
                     <Link href={`/web/ficha/${m.codigo}`} className="shrink-0 rounded-full bg-white px-3 py-1 font-mono2 text-[10px] uppercase tracking-widest text-[#07503f]">Ficha ↓</Link>
                   </div>
@@ -181,12 +181,12 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
           <h2 className="mt-3 font-display text-4xl font-light">Respaldo industrial, flexibilidad total.</h2>
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
             {[['Certificación ISO 9001', 'Auditada por Bureau Veritas, con homologaciones directas ante Pluspetrol, Servicios Dipp y Procesos Patagónicos.'], ['Estructuras de alta rigidez', 'Resisten tracciones y traslados sin deformaciones, incluso en clima extremo.'], ['Estándar multitarea', 'Un mismo producto se adapta a lo que cada proyecto necesite.'], ['Montaje llave en mano', 'Izaje propio: mínimas horas en terreno y puesta en servicio acelerada.']].map(([t, d]) => (
-              <div key={t}><h3 className="font-bold">{t}</h3><p className="text-sm text-white/75">{d}</p></div>
+              <div key={t}><h3 className="font-bold">{t}</h3><p className="text-sm text-white">{d}</p></div>
             ))}
           </div>
           <div className="mt-8 grid grid-cols-2 gap-4 text-center md:grid-cols-4">
             {[['15+', 'Años fabricando'], ['7', 'Líneas de producto'], ['6', 'Homologaciones / clientes'], ['100%', 'Fabricación propia']].map(([n, l]) => (
-              <div key={l}><p className="font-display text-5xl">{n}</p><p className="font-mono2 text-[11px] uppercase tracking-[.14em] opacity-70">{l}</p></div>
+              <div key={l}><p className="font-display text-5xl">{n}</p><p className="font-mono2 text-[11px] uppercase tracking-[.14em] text-[#3f3f46]">{l}</p></div>
             ))}
           </div>
         </div>
@@ -224,7 +224,7 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <h2 className="mt-3 font-display text-4xl font-medium">Tu módulo, en tres pasos.</h2>
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
           {[['01', 'Definimos tu necesidad', 'Clima, transporte, capacidad y equipamiento. Cálculo e ingeniería propia.'], ['02', 'Fabricamos en planta', 'Producción integrada con auditoría en cada estación y plazos óptimos.'], ['03', 'Entregamos llave en mano', 'Izaje ágil en terreno, unidad lista para operar.']].map(([n, t, d]) => (
-            <div key={n}><p className="mx-auto grid h-16 w-16 place-items-center rounded-full border border-dashed border-[#07503f] bg-white font-mono2 text-[#07503f]">{n}</p><h3 className="mt-2 font-bold">{t}</h3><p className="text-sm text-[#6d6d6d]">{d}</p></div>
+            <div key={n}><p className="mx-auto grid h-16 w-16 place-items-center rounded-full border border-dashed border-[#07503f] bg-white font-mono2 text-[#07503f]">{n}</p><h3 className="mt-2 font-bold">{t}</h3><p className="text-sm text-[#3f3f46]">{d}</p></div>
           ))}
         </div>
       </section>
@@ -234,10 +234,10 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <div className="mx-auto max-w-6xl px-4 text-center">
           <p className="rj-eyebrow rj-eyebrow-ondark">Rurales Juanita × Isamar S.R.L.</p>
           <h2 className="mx-auto mt-3 max-w-2xl font-display text-3xl font-light">Juntas para ofrecerte <em className="text-[#e8fe85]">infraestructura en origen.</em></h2>
-          <p className="mx-auto mt-2 max-w-2xl text-white/80">Fabricación en origen en plena cuenca neuquina (Isamar, Neuquén) + planta 9 de Julio desde 2010. Dos marcas, MERCOSUR: Argentina · Paraguay · Brasil.</p>
+          <p className="mx-auto mt-2 max-w-2xl text-white">Fabricación en origen en plena cuenca neuquina (Isamar, Neuquén) + planta 9 de Julio desde 2010. Dos marcas, MERCOSUR: Argentina · Paraguay · Brasil.</p>
           <div className="mx-auto mt-6 grid max-w-3xl grid-cols-2 gap-4 text-left md:grid-cols-4">
             {[['2010', 'La planta', 'Nace en 9 de Julio dedicada a módulos transportables.'], ['Fábrica', 'Producción integrada', 'Todo bajo el mismo techo, auditado por estación.'], ['ISO 9001', 'Certificación', 'Bureau Veritas + Pluspetrol, Dipp, Procesos Patagónicos e Isamar.'], ['MERCOSUR', 'Dos marcas', 'Rurales Juanita y H.M Housing Module.']].map(([y, t, d]) => (
-              <div key={t}><p className="font-mono2 text-xs tracking-[.16em] text-[#e8fe85]">{y}</p><h3 className="font-display text-xl">{t}</h3><p className="text-sm text-white/75">{d}</p></div>
+              <div key={t}><p className="font-mono2 text-xs tracking-[.16em] text-[#e8fe85]">{y}</p><h3 className="font-display text-xl">{t}</h3><p className="text-sm text-white">{d}</p></div>
             ))}
           </div>
         </div>
@@ -248,7 +248,7 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <div className="rounded-[30px] bg-[#07503f] p-6 text-center text-white md:p-12">
           <p className="rj-eyebrow rj-eyebrow-ondark">Cotización en 24 h</p>
           <h2 className="mx-auto mt-3 max-w-2xl font-display text-4xl font-light">Contanos tu proyecto y te respondemos con la <em className="text-[#e8fe85]">solución óptima.</em></h2>
-          <p className="mx-auto mt-2 text-white/85">Lo recibimos en <b>{EMPRESA.email}</b> y entra directo a nuestro CRM. O escribinos al <b>{EMPRESA.whatsapp}</b>.</p>
+          <p className="mx-auto mt-2 text-white">Lo recibimos en <b>{EMPRESA.email}</b> y entra directo a nuestro CRM. O escribinos al <b>{EMPRESA.whatsapp}</b>.</p>
           <form action={lead} className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-3 text-left md:grid-cols-2">
             {sp.ok && <p className="rounded-2xl bg-[#e8fe85] p-3 text-sm font-bold text-[#053d30] md:col-span-2">✓ Recibido. Te contactamos en 24 h.</p>}
             <input name="nombre" placeholder="Nombre y apellido *" className="rj-input" required />
@@ -282,11 +282,11 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
         <div className="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-4">
           <div>
             <p className="font-display text-xl font-semibold">Rurales Juanita</p>
-            <p className="mt-1 text-sm text-white/70">Soluciones integrales llave en mano de infraestructura modular móvil para petróleo, minería, obra y agro.</p>
+            <p className="mt-1 text-sm text-white">Soluciones integrales llave en mano de infraestructura modular móvil para petróleo, minería, obra y agro.</p>
           </div>
-          <div><p className="font-mono2 text-[11px] uppercase tracking-[.16em] text-white/60">Productos</p>{cats.slice(0, 6).map((c) => <p key={c.slug} className="text-sm leading-8 text-white/85">{c.nombre}</p>)}</div>
-          <div><p className="font-mono2 text-[11px] uppercase tracking-[.16em] text-white/60">Empresa</p><p className="text-sm leading-8 text-white/85">Sobre nosotros<br />Alianza Isamar<br />Ficha técnica<br /><Link href="/" className="underline">Acceso interno →</Link></p></div>
-          <div><p className="font-mono2 text-[11px] uppercase tracking-[.16em] text-white/60">Contacto</p><p className="text-sm leading-7 text-white/85">{EMPRESA.tel}<br />{EMPRESA.email}<br />{EMPRESA.direccion}</p></div>
+          <div><p className="font-mono2 text-[11px] uppercase tracking-[.16em] text-[#e8fe85]">Productos</p>{cats.slice(0, 6).map((c) => <p key={c.slug} className="text-sm leading-8 text-white/85">{c.nombre}</p>)}</div>
+          <div><p className="font-mono2 text-[11px] uppercase tracking-[.16em] text-[#e8fe85]">Empresa</p><p className="text-sm leading-8 text-white/85">Sobre nosotros<br />Alianza Isamar<br />Ficha técnica<br /><Link href="/" className="underline">Acceso interno →</Link></p></div>
+          <div><p className="font-mono2 text-[11px] uppercase tracking-[.16em] text-[#e8fe85]">Contacto</p><p className="text-sm leading-7 text-white/85">{EMPRESA.tel}<br />{EMPRESA.email}<br />{EMPRESA.direccion}</p></div>
         </div>
         <p className="mx-auto mt-8 max-w-6xl border-t border-white/10 px-4 pt-4 text-xs text-white/55">© 2025 Rurales Juanita & H.M Housing Module — 9 de Julio, Buenos Aires. ISO 9001 · Bureau Veritas · Hecho en Argentina · En alianza con Isamar S.R.L.</p>
       </footer>

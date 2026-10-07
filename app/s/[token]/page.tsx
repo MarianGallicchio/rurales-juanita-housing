@@ -26,12 +26,12 @@ export default async function Share({ params }: { params: Promise<{ token: strin
         </div>
       </header>
       <div className="mx-auto max-w-2xl p-4">
-        <p className="text-sm opacity-70">Para {c.razon_social ?? '—'} · Válida {c.validez_dias} días · Entrega {c.plazo_entrega_dias} días</p>
+        <p className="text-sm text-[#3f3f46]">Para {c.razon_social ?? '—'} · Válida {c.validez_dias} días · Entrega {c.plazo_entrega_dias} días</p>
         {items.map((it: any) => (
           <div key={it.id} className="rj-card mt-2">
             <FotoModelo url={it.foto} codigo={it.codigo} />
             <p className="mt-2 font-bold">{it.cantidad}x {it.codigo} — {it.nombre}</p>
-            {(it.largo_mm || it.ancho_mm) && <p className="text-xs opacity-70">Medidas: {it.largo_mm ?? '—'}x{it.ancho_mm ?? '—'}x{it.alto_mm ?? '—'} mm</p>}
+            {(it.largo_mm || it.ancho_mm) && <p className="text-xs text-[#3f3f46]">Medidas: {it.largo_mm ?? '—'}x{it.ancho_mm ?? '—'}x{it.alto_mm ?? '—'} mm</p>}
             <p className="text-sm">{fmtUSD(Number(it.precio_unitario_usd))} c/u</p>
           </div>
         ))}
