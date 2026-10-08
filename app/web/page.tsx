@@ -16,9 +16,10 @@ async function lead(fd: FormData) {
   const nombre = String(fd.get('nombre') ?? '').trim();
   if (!nombre) return;
   const prod = String(fd.get('producto') ?? '');
+  const canal = String(fd.get('canal') ?? 'web');
   const msg = `${prod ? `[${prod}] ` : ''}${String(fd.get('mensaje') ?? '')}`;
-  await queryLocal(`insert into public.lead_web (nombre, empresa, email, telefono, mensaje, origen_url) values ($1,$2,$3,$4,$5,'/web')`,
-    [nombre, String(fd.get('empresa') ?? ''), String(fd.get('email') ?? ''), String(fd.get('telefono') ?? ''), msg]);
+  await queryLocal(`insert into public.lead_web (nombre, empresa, email, telefono, mensaje, origen_url, canal) values ($1,$2,$3,$4,$5,'/web',$6)`,
+    [nombre, String(fd.get('empresa') ?? ''), String(fd.get('email') ?? ''), String(fd.get('telefono') ?? ''), msg, canal]);
   redirect('/web?ok=1#contacto');
 }
 
@@ -261,6 +262,16 @@ export default async function Web({ searchParams }: { searchParams: Promise<{ ok
             <select name="producto" className="rj-input md:col-span-2" defaultValue="">
               <option value="">¿Qué necesitás? *</option>
               {PRODUCTOS_CONTACTO.map((p) => <option key={p}>{p}</option>)}
+            </select>
+            <select name="canal" className="rj-input" defaultValue="web" aria-label="¿Cómo nos conociste?">
+              <option value="web">Nos encontré en la web</option>
+              <option value="google">Google</option>
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="feria">Feria / expo</option>
+              <option value="referido">Me recomendaron</option>
+              <option value="concesionario">Concesionario</option>
             </select>
             <textarea name="mensaje" placeholder="Contanos: cantidad, ubicación, plazo... *" rows={4} className="rj-input md:col-span-2" required />
             <div className="flex flex-wrap gap-3 md:col-span-2">
