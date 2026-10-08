@@ -3,6 +3,7 @@ import { fmtUSD, fmtARS, fmtFechaAR, fmtFechaHoraAR } from '@/lib/formato-ar';
 import { waLink, WA_COTIZACION } from '@/lib/empresa';
 import { PadFirma } from '@/components/pad-firma';
 import { BotonImprimir } from '@/components/boton-imprimir';
+import { Estado } from '@/components/estado';
 import { Migas } from '@/components/migas';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -55,6 +56,11 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
     : null;
   const dif = prev ? Math.round((Number(c.total_usd) - Number(prev.total_usd)) * 100) / 100 : 0;
   const difTxt = prev ? `${dif >= 0 ? '+' : ''}${fmtUSD(dif)}` : '';
+  const hijas = await queryLocal<any>(`select id, numero, version, estado, total_usd from public.cotizacion where cotizacion_origen_id=$1 order by version`, [id]);
+  const raizId = c.cotizacion_origen_id ?? id;
+  const hermanas = c.cotizacion_origen_id
+    ? await queryLocal<any>(`select id, numero, version, estado, total_usd from public.cotizacion where cotizacion_origen_id=$1 order by version`, [c.cotizacion_origen_id])
+    : [];
   return (
     <main className="mx-auto max-w-2xl bg-white p-6 text-sm">
       <div className="print:hidden"><Migas trail={[{ label: 'Cotizador', href: '/cotizador' }, { label: c.numero }]} /></div>
@@ -62,7 +68,7 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
         <p className="font-black text-[#07503f]">RURALES JUANITA · H.M HOUSING MODULE</p>
         <p className="text-xs">9 de Julio, Bs. As. · ISO 9001 Bureau Veritas · {fmtFechaAR(c.creada_en)}</p>
       </div>
-      <h1 className="mt-3 text-xl font-bold">{c.numero}{Number(c.version) > 1 ? ` v${c.version}` : ''} — {c.estado}{c.tipo === 'alquiler' ? ' · ALQUILER' : ''}</h1>
+      <h1 className="mt-3 text-xl font-bold"><span className="font-mono2">{c.numero}</span>{Number(c.version) > 1 ? ` v${c.version}` : ''} — <Estado valor={c.estado} />{c.tipo === 'alquiler' ? <> <Estado valor="alquiler" /></> : null}</h1>
       <p>Cliente: {c.razon_social ?? '—'} · Validez {c.validez_dias} días · Entrega {c.plazo_entrega_dias} días · Pago: {c.condicion_pago}</p>
       {c.share_token && <p className="text-xs print:hidden">Link público: <a className="underline" href={`/s/${c.share_token}`} target="_blank">/s/{c.share_token}</a> (válido en borrador/enviada)</p>}
       {items.map((it: any) => <div key={it.id}><p>· {it.cantidad}x {it.codigo} {it.nombre}{(it.largo_mm || it.ancho_mm) ? ` (${it.largo_mm ?? '—'}x${it.ancho_mm ?? '—'}x${it.alto_mm ?? '—'}mm)` : ''} — mat {fmtUSD(Number(it.costo_materiales_usd))} + MO {fmtUSD(Number(it.costo_mano_obra_usd))}</p>{opcRows.filter((o: any) => o.item_id === it.id).map((o: any, i: number) => <p key={i} className="ml-4 text-xs text-[#3f3f46]">+ {o.nombre} — {fmtUSD(Number(o.precio_usd))}</p>)}</div>)}
@@ -71,6 +77,26 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
       {prev && (
         <div className="mt-2 rounded-xl bg-[#f1efdf] p-3 text-xs">
           <p className="font-black">vs versión anterior {prev.numero} (v{prev.version}): {fmtUSD(Number(prev.total_usd))} → <b>{fmtUSD(Number(c.total_usd))}</b> ({difTxt}) · margen {prev.margen_pct}% → {c.margen_pct}%</p>
+        </div>
+      )}
+      {(hermanas.length > 0 || hijas.length > 0) && (
+        <div className="mt-2 rounded-xl border p-3 text-xs print:hidden">
+          <p className="font-black">Línea de versiones</p>
+          {hermanas.length > 0 && <p className="mt-1 text-[#3f3f46]">De la misma origen:</p>}
+          {hermanas.map((v: any) => (
+            <p key={v.id} className="flex items-center justify-between gap-2 py-0.5">
+              <span><span className="font-mono2">{v.numero}</span> v{v.version} · {fmtUSD(Number(v.total_usd))}</span>
+              {v.id === id ? <Estado valor={v.estado} /> : <a href={`/cotizador/${v.id}`} className="font-bold text-[#07503f] underline">ver →</a>}
+            </p>
+          ))}
+          {hijas.length > 0 && <p className="mt-1 text-[#3f3f46]">Versiones hijas de esta:</p>}
+          {hijas.map((v: any) => (
+            <p key={v.id} className="flex items-center justify-between gap-2 py-0.5">
+              <span><span className="font-mono2">{v.numero}</span> v{v.version} · {fmtUSD(Number(v.total_usd))}</span>
+              <a href={`/cotizador/${v.id}`} className="font-bold text-[#07503f] underline">ver →</a>
+            </p>
+          ))}
+          {raizId !== id && <p className="mt-1"><a href={`/cotizador/${raizId}`} className="font-bold text-[#07503f] underline">← Volver a la versión origen</a></p>}
         </div>
       )}
       {c.firma_url && (
@@ -89,7 +115,7 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
         <BotonImprimir />
         <Link href="/cotizador" className="rounded px-4 py-2 underline">Volver</Link>
       </div>
-      <p className="mt-1 text-xs opacity-60 print:hidden">Registrá el envío con ✓ envío en el listado (canal WA/Mail/PDF). Envío automático por SMTP: pendiente de credenciales.</p>
+      <p className="mt-1 text-xs text-[#3f3f46] print:hidden">Registrá el envío con ✓ envío en el listado (canal WA/Mail/PDF). Envío automático por SMTP: pendiente de credenciales.</p>
     </main>
   );
 }

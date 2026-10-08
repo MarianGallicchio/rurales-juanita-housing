@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 // Insignias de estado unificadas: siempre texto + color (nunca solo color).
 const MAPA: Record<string, { label: string; clase: string }> = {
   borrador: { label: 'Borrador', clase: 'bg-slate-200 text-slate-800' },
+  alquiler: { label: 'Alquiler', clase: 'bg-[#e8fe85] text-[#053d30]' },
   enviada: { label: 'Enviada', clase: 'bg-sky-200 text-sky-900' },
   aceptada: { label: 'Ganada', clase: 'bg-emerald-200 text-emerald-900' },
   rechazada: { label: 'Perdida', clase: 'bg-red-200 text-red-900' },

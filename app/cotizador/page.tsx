@@ -1,5 +1,7 @@
 import { AppLayout } from '@/components/app-layout';
 import { BuscadorCliente } from '@/components/buscador-cliente';
+import { CotizarVivo } from '@/components/cotizar-vivo';
+import { Estado } from '@/components/estado';
 import { PageHero, Paso, Tarjeta } from '@/components/ui-brand';
 import { queryLocal } from '@/lib/db-local';
 import { fmtUSD, fmtARS, calcularTotales } from '@/lib/formato-ar';
@@ -155,7 +157,7 @@ async function registrarEnvio(fd: FormData) {
   redirect('/cotizador');
 }
 
-export default async function Cotizador({ searchParams }: { searchParams: Promise<{ aprob?: string; mod?: string }> }) {
+export default async function Cotizador({ searchParams }: { searchParams: Promise<{ aprob?: string; mod?: string; q?: string; est?: string }> }) {
   const sp = await searchParams;
   // Vencimiento automático diario (tarea programada simulada en cada visita)
   await queryLocal(`update public.cotizacion set estado='vencida' where estado='enviada' and creada_en + (validez_dias || ' days')::interval < now()`);
@@ -174,8 +176,14 @@ export default async function Cotizador({ searchParams }: { searchParams: Promis
      join public.bom_modelo b on b.id=l.bom_id join public.material m on m.id=l.material_id
      where b.modelo_id=$1 and b.version=(select max(version) from public.bom_modelo where modelo_id=$1)`, [modSel.id, modSel.id]))[0]?.t ?? 0 : 0;
   const tcVig = (await queryLocal<{ v: number }>(`select valor_ars_por_usd as v from public.tipo_cambio order by fecha desc limit 1`))[0]?.v ?? 1540;
+  const margenMin = Number((await queryLocal<{ valor: string }>(`select valor from public.configuracion where clave='MARGEN_MIN_PCT'`))[0]?.valor ?? 15);
   const { exigirRol } = await import('@/lib/sesion');
   const ses = await exigirRol(['Administrador', 'Ventas']);
+  const q = (sp.q ?? '').trim().toLowerCase();
+  const est = sp.est ?? '';
+  const cotsFiltradas = cots.filter((c) =>
+    (!est || c.estado === est) &&
+    (!q || c.numero.toLowerCase().includes(q) || fmtUSD(Number(c.total_usd)).toLowerCase().includes(q)));
   const abiertas = cots.filter((c) => ['borrador', 'enviada'].includes(c.estado)).length;
   return (
     <AppLayout rol={ses.rol} email={ses.email}>
@@ -199,10 +207,24 @@ export default async function Cotizador({ searchParams }: { searchParams: Promis
             ))}
           </div>
         )}
-        {cots.map((c) => (
+        <form method="get" action="/cotizador" className="rj-card flex flex-wrap gap-2">
+          <input name="q" defaultValue={sp.q ?? ''} placeholder="Buscar n° o total…" className="rj-input !w-48" aria-label="Buscar cotización" />
+          <select name="est" defaultValue={est} className="rj-input !w-44" aria-label="Filtrar por estado">
+            <option value="">Todos los estados</option>
+            {['borrador', 'enviada', 'aceptada', 'rechazada', 'vencida'].map((e) => <option key={e} value={e}>{e}</option>)}
+          </select>
+          <button className="rj-btn-primary">Filtrar</button>
+          {(q || est) && <Link href="/cotizador" className="rj-btn">Limpiar</Link>}
+        </form>
+        {cotsFiltradas.length === 0 && (
+          <p className="rj-card text-sm text-[#3f3f46]">
+            {cots.length === 0 ? <>Todavía no hay cotizaciones. <b>Creá la primera abajo.</b></> : <>Sin resultados para este filtro. <Link href="/cotizador" className="font-bold text-[#07503f] hover:underline">Limpiar →</Link></>}
+          </p>
+        )}
+        {cotsFiltradas.map((c) => (
           <div key={c.id} className="rj-card flex items-center justify-between gap-2">
             <div>
-              <p className="font-bold">{c.numero}{Number(c.version) > 1 ? ` v${c.version}` : ''} · <span className="rj-chip bg-slate-200">{c.estado}</span> {c.tipo === 'alquiler' && <span className="rj-chip bg-[#e8fe85]">alquiler</span>}</p>
+              <p className="font-bold"><span className="font-mono2">{c.numero}</span>{Number(c.version) > 1 ? ` v${c.version}` : ''} · <Estado valor={c.estado} /> {c.tipo === 'alquiler' && <Estado valor="alquiler" />}</p>
               <p className="text-sm text-[#3f3f46]">{fmtUSD(Number(c.total_usd))} · {fmtARS(Number(c.total_ars))}</p>
               {c.share && <a href={`/s/${c.share}`} target="_blank" className="font-mono2 text-[10px] underline">link público →</a>}
             </div>
@@ -235,43 +257,39 @@ export default async function Cotizador({ searchParams }: { searchParams: Promis
           </div>
           {modSel && <p className="mt-1 text-xs text-[#3f3f46]">Costo materiales según BOM vigente: <b>{fmtUSD(Number(bomTotal))}</b> · Superficie {modSel.sup ?? '—'} m² (para opciones por m²)</p>}
         </form>
+        <div className="rj-card" aria-label="Progreso del asistente">
+          <ol className="flex flex-wrap items-center gap-1 text-[13px]">
+            {[
+              ['1 · Modelo', !!modSel],
+              ['2 · Equipamiento', !!modSel && opcs.length > 0],
+              ['3 · Costos', !!modSel],
+              ['4 · Crear', false],
+            ].map(([label, ok], i) => (
+              <li key={i} className="flex items-center gap-1">
+                <span className={`rounded-full px-2.5 py-1 font-bold ${ok ? 'bg-[#07503f] text-white' : i === 0 || modSel ? 'border border-[#07503f]/30 text-[#07503f]' : 'bg-slate-100 text-[#3f3f46]'}`}>
+                  {ok ? '✓ ' : ''}{label}
+                </span>
+                {i < 3 && <span aria-hidden className="text-neutral-400">→</span>}
+              </li>
+            ))}
+          </ol>
+          {!modSel && <p className="mt-1 text-[13px] text-[#3f3f46]">Elegí el modelo arriba para activar el equipamiento y el total en vivo.</p>}
+        </div>
         <form action={crearCotizacion}>
           <div className="flex flex-col gap-3">
             <input type="hidden" name="modelo_id" value={modSel?.id ?? ''} />
             <Paso n={1} titulo="Cliente">
               <BuscadorCliente />
-              {!modSel && <p className="mt-1 text-xs opacity-60">Primero cargá el modelo arriba para ver su equipamiento.</p>}
+              {!modSel && <p className="mt-1 text-xs text-[#3f3f46]">Primero cargá el modelo arriba para ver su equipamiento.</p>}
             </Paso>
-            {modSel && opcs.length > 0 && (
-              <Paso n={2} titulo={`Equipamiento (${opcs.length} opciones)`}>
-                <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
-                  {opcs.map((o) => (
-                    <label key={o.id} className="flex items-center gap-2 rounded-xl border p-2 text-sm">
-                      <input type="checkbox" name="op" value={o.id} defaultChecked={o.defecto || o.obligatoria} disabled={o.obligatoria} className="h-5 w-5" />
-                      {o.obligatoria && <input type="hidden" name="op" value={o.id} />}
-                      <span className="flex-1">{o.nombre} <span className="opacity-60">[{o.grupo} · {o.tipo === 'por_m2' ? `$${o.precio}/m²` : `$${o.precio}`}]{o.obligatoria ? ' · obligatoria' : ''}</span></span>
-                    </label>
-                  ))}
-                </div>
-              </Paso>
+            {modSel ? (
+              <CotizarVivo opcs={opcs} sup={Number(modSel.sup ?? 0)} tcVig={Number(tcVig)} margenMin={margenMin}
+                matInicial={Number(bomTotal) > 0 ? Math.round(Number(bomTotal)) : 18000} moInicial={4500} />
+            ) : (
+              <div className="rj-card text-sm text-[#3f3f46]">Los pasos 2 y 3 aparecen al cargar el modelo.</div>
             )}
-            <Paso n={3} titulo="Costos y margen">
-              <div className="grid grid-cols-2 gap-2">
-                <label className="text-xs">Cantidad<input name="cantidad" type="number" defaultValue={1} min={1} className="rj-input" /></label>
-                <label className="text-xs">Modalidad<select name="tipo" className="rj-input"><option value="venta">Venta</option><option value="alquiler">Alquiler (obra temporal)</option></select></label>
-                <label className="text-xs">Largo mm<input name="largo" type="number" placeholder="a medida" className="rj-input" /></label>
-                <label className="text-xs">Ancho mm<input name="ancho" type="number" placeholder="a medida" className="rj-input" /></label>
-                <label className="text-xs">Alto mm<input name="alto" type="number" placeholder="a medida" className="rj-input" /></label>
-                <label className="text-xs">Dólar del día<input name="tc" type="number" defaultValue={tcVig} className="rj-input" /></label>
-                <label className="text-xs">Materiales USD{Number(bomTotal) > 0 && ` (BOM: ${Math.round(Number(bomTotal))})`}<input name="mat" type="number" defaultValue={Number(bomTotal) > 0 ? Math.round(Number(bomTotal)) : 18000} className="rj-input" /></label>
-                <label className="text-xs">Mano de obra USD<input name="mo" type="number" defaultValue={4500} className="rj-input" /></label>
-                <label className="text-xs">Margen %<input name="margen" type="number" defaultValue={25} className="rj-input" /></label>
-                <label className="text-xs">Flete USD<input name="flete" type="number" defaultValue={1800} className="rj-input" /></label>
-              </div>
-              <p className="mt-1 text-xs opacity-60">Si el margen queda bajo el mínimo de Configuración, la cotización pide aprobación del Administrador.</p>
-            </Paso>
             <Paso n={4} titulo="Revisión y creación">
-              <button className="rj-btn-accent w-full">Crear en borrador → revisar PDF → enviar</button>
+              <button className="rj-btn-accent w-full" disabled={!modSel}>Crear en borrador → revisar PDF → enviar</button>
             </Paso>
           </div>
         </form>
