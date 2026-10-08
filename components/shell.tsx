@@ -145,7 +145,7 @@ export function Shell({ nombre, rolLabel, email, mods, counts, usd, recents, tar
                 <span className="block max-w-32 truncate text-sm font-bold">{nombre}</span>
                 <span className="block text-[12px] text-[#07503f] dark:text-[#8fb5a5]">{rolLabel}</span>
               </span>
-              <SalirButton compacto />
+              <SalirButton />
             </div>
           </div>
         </div>

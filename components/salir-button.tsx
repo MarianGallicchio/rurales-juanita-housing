@@ -1,18 +1,11 @@
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { salir } from '@/lib/acciones';
 
-export function SalirButton({ compacto }: { compacto?: boolean }) {
+export function SalirButton() {
   return (
-    <form
-      action={async () => {
-        'use server';
-        (await cookies()).delete('sesion_local');
-        redirect('/ingresar');
-      }}
-    >
+    <form action={salir}>
       <Button variant="ghost" size="sm" title="Cerrar sesión">
-        {compacto ? 'Salir' : 'Salir'}
+        Salir
       </Button>
     </form>
   );
