@@ -1,6 +1,7 @@
 import { queryLocal } from '@/lib/db-local';
 import { fmtFechaAR } from '@/lib/formato-ar';
 import { BotonImprimir } from '@/components/boton-imprimir';
+import { Migas } from '@/components/migas';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -15,6 +16,7 @@ export default async function Remito({ params }: { params: Promise<{ id: string 
   const emp = (await queryLocal<any>(`select * from public.empresa where id=1`))[0];
   return (
     <main className="mx-auto max-w-2xl bg-white p-6 text-sm">
+      <div className="print:hidden"><Migas trail={[{ label: 'Producción', href: '/produccion' }, { label: `Remito ${op.numero}` }]} /></div>
       <div className="flex items-center gap-3 border-b-4 border-[#07503f] pb-3">
         {emp?.logo_url && <img src={emp.logo_url} alt="logo" className="h-14 object-contain" />}
         <div>

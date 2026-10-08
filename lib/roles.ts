@@ -33,6 +33,21 @@ export const MODULOS: { key: Modulo; label: string; href: string; grupo: Grupo; 
 
 export const GRUPOS: Grupo[] = ['Operar', 'Producir', 'Cuidar', 'Sistema'];
 
+// Etiquetas visibles por rol (el enum de BD no se toca). Mapeo aprobado en Fase 0:
+// Administrador→Dirección · Produccion→Planta · Compras→Administración.
+export const ROLE_LABELS: Record<Rol, string> = {
+  Administrador: 'Dirección',
+  Ventas: 'Ventas',
+  Produccion: 'Planta',
+  Compras: 'Administración',
+  Postventa: 'Postventa',
+};
+
+export function rolLabel(rol?: Rol | null): string {
+  if (!rol) return '—';
+  return ROLE_LABELS[rol] ?? rol;
+}
+
 export function modulosParaRol(rol?: Rol | null) {
   if (!rol) return [];
   if (rol === 'Administrador') return MODULOS;

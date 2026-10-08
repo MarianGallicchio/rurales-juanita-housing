@@ -1,6 +1,7 @@
 import { queryLocal } from '@/lib/db-local';
 import { fmtUSD, fmtARS, fmtFechaAR } from '@/lib/formato-ar';
 import { BotonImprimir } from '@/components/boton-imprimir';
+import { Migas } from '@/components/migas';
 import { EMPRESA } from '@/lib/empresa';
 import Link from 'next/link';
 
@@ -21,6 +22,7 @@ export default async function Factura({ params }: { params: Promise<{ id: string
   const iva = Math.round((Number(f.total_ars) - neto) * 100) / 100;
   return (
     <main className="mx-auto max-w-2xl bg-white p-6 text-sm print:max-w-none">
+      <div className="print:hidden"><Migas trail={[{ label: 'Facturación', href: '/facturacion' }, { label: f.numero }]} /></div>
       <div className="flex items-start justify-between gap-4 border-b-4 border-[#07503f] pb-3">
         <div className="flex items-center gap-3">
           {emp?.logo_url

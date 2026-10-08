@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 import "./globals.css";
@@ -21,7 +21,6 @@ export const viewport: Viewport = {
 };
 
 const inter = Inter({ variable: "--font-sans", display: "swap", subsets: ["latin"] });
-const serif = Cormorant_Garamond({ variable: "--font-serif", display: "swap", subsets: ["latin"], weight: ["400", "500", "600"] });
 const mono = JetBrains_Mono({ variable: "--font-mono", display: "swap", subsets: ["latin"], weight: ["400", "500"] });
 
 export default function RootLayout({
@@ -31,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es-AR" suppressHydrationWarning>
-      <body className={`${inter.variable} ${serif.variable} ${mono.variable} antialiased`}>
+      <body className={`${inter.variable} ${mono.variable} antialiased`}>
         <Script id="sw-register" strategy="afterInteractive">
           {`if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}`}
         </Script>

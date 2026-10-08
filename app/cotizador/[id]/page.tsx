@@ -3,6 +3,7 @@ import { fmtUSD, fmtARS, fmtFechaAR, fmtFechaHoraAR } from '@/lib/formato-ar';
 import { waLink, WA_COTIZACION } from '@/lib/empresa';
 import { PadFirma } from '@/components/pad-firma';
 import { BotonImprimir } from '@/components/boton-imprimir';
+import { Migas } from '@/components/migas';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
@@ -56,6 +57,7 @@ export default async function CotPDF({ params }: { params: Promise<{ id: string 
   const difTxt = prev ? `${dif >= 0 ? '+' : ''}${fmtUSD(dif)}` : '';
   return (
     <main className="mx-auto max-w-2xl bg-white p-6 text-sm">
+      <div className="print:hidden"><Migas trail={[{ label: 'Cotizador', href: '/cotizador' }, { label: c.numero }]} /></div>
       <div className="border-b-4 border-[#e8fe85] pb-2">
         <p className="font-black text-[#07503f]">RURALES JUANITA · H.M HOUSING MODULE</p>
         <p className="text-xs">9 de Julio, Bs. As. · ISO 9001 Bureau Veritas · {fmtFechaAR(c.creada_en)}</p>

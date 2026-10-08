@@ -22,7 +22,7 @@ async function guardarParam(fd: FormData) {
   'use server';
   const { queryLocal } = await import('@/lib/db-local');
   const { redirect } = await import('next/navigation');
-  for (const k of ['IVA_PCT', 'MARGEN_MIN_PCT', 'VALIDEZ_COTIZ_DIAS']) {
+  for (const k of ['IVA_PCT', 'MARGEN_MIN_PCT', 'VALIDEZ_COTIZ_DIAS', 'OBJETIVO_VENTAS_MENSUAL_USD']) {
     const v = String(fd.get(k) ?? '').trim();
     if (v) await queryLocal(`update public.configuracion set valor=$2, actualizado_en=now() where clave=$1`, [k, v]);
   }
@@ -92,7 +92,7 @@ export default async function Config({ searchParams }: { searchParams: Promise<{
         {viejo && <p className="rounded-xl bg-amber-100 p-3 text-sm font-bold">⚠ El tipo de cambio tiene más de {params.TC_MAX_HORAS ?? 24} h. Cargá el de hoy antes de cotizar.</p>}
         <Paso n={1} titulo="Tipo de cambio (USD → ARS, manual con fecha)">
           <div className="mb-2 flex flex-col gap-1">
-            {tcs.map((t) => <p key={t.fecha} className="text-sm">· {fmtFechaAR(t.fecha)} — <b>$ {t.valor}</b> <span className="opacity-60">({t.fuente})</span></p>)}
+            {tcs.map((t) => <p key={t.fecha} className="text-sm">· {fmtFechaAR(t.fecha)} — <b>$ {t.valor}</b> <span className="text-xs text-[#3f3f46]">({t.fuente})</span></p>)}
           </div>
           <form action={guardarTC} className="flex gap-2">
             <input name="fecha" type="date" defaultValue={hoy} className="rj-input" required />
@@ -105,12 +105,13 @@ export default async function Config({ searchParams }: { searchParams: Promise<{
             <label className="text-xs">IVA %<input name="IVA_PCT" defaultValue={params.IVA_PCT} className="rj-input" /></label>
             <label className="text-xs">Margen mín. %<input name="MARGEN_MIN_PCT" defaultValue={params.MARGEN_MIN_PCT} className="rj-input" /></label>
             <label className="text-xs">Validez días<input name="VALIDEZ_COTIZ_DIAS" defaultValue={params.VALIDEZ_COTIZ_DIAS} className="rj-input" /></label>
+            <label className="text-xs">Objetivo ventas mensual USD<input name="OBJETIVO_VENTAS_MENSUAL_USD" defaultValue={params.OBJETIVO_VENTAS_MENSUAL_USD ?? '120000'} className="rj-input" /></label>
             <label className="col-span-3 text-xs">Razón social<input name="razon" defaultValue={emp?.razon_social} className="rj-input" /></label>
             <label className="text-xs">Teléfonos<input name="tels" defaultValue={emp?.telefonos} className="rj-input" /></label>
             <label className="col-span-2 text-xs">Email<input name="email" defaultValue={emp?.email ?? ''} className="rj-input" /></label>
             <button className="rj-btn-accent col-span-3">Guardar parámetros</button>
           </form>
-          <p className="mt-1 text-xs opacity-60">Confirmá alícuotas con tu contador. El margen mínimo exige aprobación del Administrador.</p>
+          <p className="mt-1 text-xs text-[#3f3f46]">Confirmá alícuotas con tu contador. El margen mínimo exige aprobación del Administrador.</p>
         </Paso>
         <Paso n={3} titulo="Logo de la empresa (sale en cotizaciones, fichas y facturas)">          {emp?.logo_url && <img src={emp.logo_url} alt="logo" className="mb-2 h-16 rounded-xl border bg-white object-contain" />}
           <form action={subirLogo} className="flex gap-2">
@@ -129,7 +130,7 @@ export default async function Config({ searchParams }: { searchParams: Promise<{
             <label className="text-xs">Clave .key<input name="key" type="file" accept=".key,.pem" className="rj-input" /></label>
             <button className="rj-btn-accent col-span-2">Guardar ARCA {params.ARCA_CERT ? `(cert: ${params.ARCA_CERT} ✓)` : '(sin certificado)'}</button>
           </form>
-          <p className="mt-1 text-xs opacity-60">El .crt se pide en AFIP con tu CUIT (Administración de Certificados). Sin certificado solo funciona el modo simulado.</p>
+          <p className="mt-1 text-xs text-[#3f3f46]">El .crt se pide en AFIP con tu CUIT (Administración de Certificados). Sin certificado solo funciona el modo simulado.</p>
         </Paso>
       </div>
     </AppLayout>

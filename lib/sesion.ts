@@ -10,22 +10,22 @@ export function hashPin(pin: string): string {
   return createHash('sha256').update(`${SAL}:${pin.trim()}`).digest('hex');
 }
 
-export async function sesionLocal(): Promise<{ id: string; rol: Rol; email: string } | null> {
+export async function sesionLocal(): Promise<{ id: string; rol: Rol; email: string; nombre: string } | null> {
   const id = (await cookies()).get('sesion_local')?.value;
   if (!id) return null;
   try {
-    const rows = await queryLocal<{ id: string; rol: Rol; email: string }>(
-      `select id, rol::text as rol, email from public.perfiles where id=$1 and activo=true`, [id]
+    const rows = await queryLocal<{ id: string; rol: Rol; email: string; nombre: string }>(
+      `select id, rol::text as rol, email, (nombre || ' ' || apellido) as nombre from public.perfiles where id=$1 and activo=true`, [id]
     );
     return rows[0] ?? null;
   } catch { return null; }
 }
 
-export async function exigirRol(roles: Rol[]): Promise<{ id: string; rol: Rol; email: string }> {
+export async function exigirRol(roles: Rol[]): Promise<{ id: string; rol: Rol; email: string; nombre: string }> {
   const s = await sesionLocal();
   const { redirect } = await import('next/navigation');
   if (!s) redirect('/ingresar');
-  const ses = s as { id: string; rol: Rol; email: string };
+  const ses = s as { id: string; rol: Rol; email: string; nombre: string };
   if (!roles.includes(ses.rol)) redirect('/');
   return ses;
 }

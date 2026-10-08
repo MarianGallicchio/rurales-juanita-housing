@@ -68,8 +68,25 @@
     background: #f1efdf;
     font-family: var(--font-sans), system-ui, sans-serif;
   }
-  h1, h2, .font-display { font-family: var(--font-serif), Georgia, serif; }
+  h1, h2, .font-display { font-family: var(--font-sans), system-ui, sans-serif; font-weight: 650; letter-spacing: -0.01em; }
   .font-mono2 { font-family: var(--font-mono), monospace; }
+  /* Cifras tabulares para indicadores y tablas */
+  .tnum { font-variant-numeric: tabular-nums; }
+  /* Etiquetas: mínimo 13px, contraste AA */
+  .lbl { font-size: 13px; font-weight: 600; color: #3f3f46; }
+  .lbl-mono { font-family: var(--font-mono), monospace; font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #07503f; }
+  /* Foco visible con teclado */
+  :focus-visible { outline: 2px solid #07503f; outline-offset: 2px; border-radius: 4px; }
+  .dark :focus-visible { outline-color: #e8fe85; }
+  /* Esqueleto de carga */
+  .skel { position: relative; overflow: hidden; background: #e7e4d5; border-radius: 8px; min-height: 1em; }
+  .skel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent); animation: rj-skell 1.2s infinite; }
+  @keyframes rj-skell { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  /* Densidad compacta para tablas (toggle en cabecera) */
+  .density-compact .rj-table td, .density-compact .rj-table th { padding-top: 4px; padding-bottom: 4px; font-size: 13px; }
+  .rj-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .rj-table th { text-align: left; font-size: 13px; font-weight: 600; color: #07503f; border-bottom: 2px solid rgba(7,80,63,.2); padding: 8px; position: sticky; top: 0; background: #fff; }
+  .rj-table td { border-bottom: 1px solid rgba(7,80,63,.1); padding: 8px; }
   button, a {
     min-height: 44px;
   }
